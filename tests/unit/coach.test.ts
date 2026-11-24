@@ -386,6 +386,13 @@ describe("grounding check", () => {
     expect(checkGrounding("Taxis were a small part of August.", [result]).grounded).toBe(true);
   });
 
+  it.each(["你花了７３．２０欧元。", "你花了73.20歐元。", "Vous avez dépensé 73,20 euros."])(
+    "rejects an unsupported euro amount in %s",
+    (text) => {
+      expect(checkGrounding(text, [result]).grounded).toBe(false);
+    },
+  );
+
   it("rejects an amount no calculation produced", () => {
     const check = checkGrounding("You spent €73.20 on taxis.", [result]);
     expect(check.grounded).toBe(false);

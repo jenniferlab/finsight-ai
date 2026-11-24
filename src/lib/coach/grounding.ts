@@ -5,7 +5,8 @@ import type { ToolResult } from "@/lib/coach/tools";
  * actually produced. The model is told to repeat figures exactly; this is the
  * check that it did. An answer with an unsupported amount is not shown.
  */
-const AMOUNT = /(?:€\s*(\d[\d\s.,  ]*\d|\d))|(?:(\d[\d\s.,  ]*\d|\d)\s*(?:€|euro\w*|eur\b))/gi;
+const AMOUNT =
+  /(?:€\s*(\d[\d\s.,  ]*\d|\d))|(?:(\d[\d\s.,  ]*\d|\d)\s*(?:€|euro\w*|eur\b|欧元|歐元))/gi;
 
 /** Reads "1 011,45", "1,011.45", "1011.45" or "1011" as cents; null if it is not a number. */
 export function parseAmountToCents(raw: string): number | null {
@@ -29,7 +30,7 @@ function supportedAmounts(results: readonly ToolResult[]): Set<number> {
     for (const fact of result.facts) add(fact.valueCents);
     for (const point of result.card?.chart.points ?? []) add(point.valueCents);
     for (const text of [result.text, result.lesson ?? "", result.card?.basis ?? ""]) {
-      for (const match of text.matchAll(AMOUNT)) {
+      for (const match of text.normalize("NFKC").matchAll(AMOUNT)) {
         const cents = parseAmountToCents(match[1] ?? match[2] ?? "");
         if (cents !== null) add(cents);
       }
@@ -47,7 +48,7 @@ export interface GroundingCheck {
 export function checkGrounding(text: string, results: readonly ToolResult[]): GroundingCheck {
   const supported = supportedAmounts(results);
   const unsupported: string[] = [];
-  for (const match of text.matchAll(AMOUNT)) {
+  for (const match of text.normalize("NFKC").matchAll(AMOUNT)) {
     const raw = match[1] ?? match[2] ?? "";
     const cents = parseAmountToCents(raw);
     if (cents === null) continue;
