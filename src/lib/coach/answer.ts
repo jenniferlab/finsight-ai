@@ -113,8 +113,13 @@ export async function answerQuestion(
       }
     }
   } catch (error) {
+    const statusCode =
+      error && typeof error === "object" && "statusCode" in error
+        ? String((error as { statusCode?: unknown }).statusCode ?? "unknown")
+        : "unknown";
     console.error(
-      "coach: model unavailable, using basic mode:",
+      "coach: model unavailable, using basic mode; provider status:",
+      statusCode,
       error instanceof Error ? error.name : "error",
     );
   }
