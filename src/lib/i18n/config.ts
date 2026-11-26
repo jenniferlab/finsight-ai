@@ -1,4 +1,4 @@
-export const LOCALES = ["en", "fi", "sv"] as const;
+export const LOCALES = ["en", "zh", "fr", "fi", "sv"] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
 export const LOCALE_COOKIE = "fs_locale";
@@ -8,6 +8,8 @@ export const LOCALE_INFO: Record<
   { label: string; flag: string; intl: string; speech: string }
 > = {
   en: { label: "English", flag: "🇬🇧", intl: "en-GB", speech: "en" },
+  zh: { label: "中文", flag: "🇨🇳", intl: "zh-CN", speech: "zh" },
+  fr: { label: "Français", flag: "🇫🇷", intl: "fr-FR", speech: "fr" },
   fi: { label: "Suomi", flag: "🇫🇮", intl: "fi-FI", speech: "fi" },
   sv: { label: "Svenska", flag: "🇸🇪", intl: "sv-SE", speech: "sv" },
 };

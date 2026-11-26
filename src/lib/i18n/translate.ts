@@ -2,8 +2,10 @@ import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
 import { en, type MessageKey } from "@/lib/i18n/messages/en";
 import { fi } from "@/lib/i18n/messages/fi";
 import { sv } from "@/lib/i18n/messages/sv";
+import { zh } from "@/lib/i18n/messages/zh";
+import { fr } from "@/lib/i18n/messages/fr";
 
-const MESSAGES: Record<Locale, Record<MessageKey, string>> = { en, fi, sv };
+const MESSAGES: Record<Locale, Partial<Record<MessageKey, string>>> = { en, fi, sv, zh, fr };
 
 export type { MessageKey };
 export type MessageParams = Record<string, string | number>;
